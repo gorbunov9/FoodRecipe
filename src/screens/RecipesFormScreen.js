@@ -5,39 +5,58 @@ import {widthPercentageToDP as wp,heightPercentageToDP as hp,} from "react-nativ
 
 export default function RecipesFormScreen({ route, navigation }) {
   const { recipeToEdit, recipeIndex, onrecipeEdited } = route.params || {};
-  const [title, setTitle] = useState(recipeToEdit ? recipeToEdit.title : "");
-  const [image, setImage] = useState(recipeToEdit ? recipeToEdit.image : "");
-  const [description, setDescription] = useState(
-    recipeToEdit ? recipeToEdit.description : ""
+  const [recipeName, setRecipeName] = useState(recipeToEdit ? recipeToEdit.recipeName : "");
+  const [recipeImage, setRecipeImage] = useState(recipeToEdit ? recipeToEdit.recipeImage : "");
+  const [cookingDescription, setCookingDescription] = useState(
+    recipeToEdit ? recipeToEdit.cookingDescription : ""
   );
 
   const saverecipe = async () => {
- 
+    const newRecipe = { recipeName, recipeImage, cookingDescription };
+    console.log(newRecipe)
+    try {
+      const existingRecipes = await AsyncStorage.getItem("customrecipes");
+      const recipes = existingRecipes ? JSON.parse(existingRecipes) : [];
+
+      // If editing an article, update it; otherwise, add a new one
+      if (recipeToEdit !== undefined) {
+        recipes[recipeIndex] = newRecipe;
+        await AsyncStorage.setItem("customrecipes", JSON.stringify(recipes));
+        if (onrecipeEdited) onrecipeEdited(); // Notify the edit
+      } else {
+        recipes.push(newRecipe);
+        await AsyncStorage.setItem("customrecipes", JSON.stringify(recipes));
+      }
+
+      navigation.goBack(); // Return to the previous screen
+    } catch (error) {
+      console.error("Error saving the article:", error);
+    }
   };
 
   return (
     <View style={styles.container}>
       <TextInput
-        placeholder="Title"
-        value={title}
-        onChangeText={setTitle}
+        placeholder="Recipe Name"
+        value={recipeName}
+        onChangeText={setRecipeName}
         style={styles.input}
       />
       <TextInput
         placeholder="Image URL"
-        value={image}
-        onChangeText={setImage}
+        value={recipeImage}
+        onChangeText={setRecipeImage}
         style={styles.input}
       />
-      {image ? (
-        <Image source={{ uri: image }} style={styles.image} />
+      {recipeImage ? (
+        <Image source={{ uri: recipeImage }} style={styles.image} />
       ) : (
         <Text style={styles.imagePlaceholder}>Upload Image URL</Text>
       )}
       <TextInput
         placeholder="Description"
-        value={description}
-        onChangeText={setDescription}
+        value={cookingDescription}
+        onChangeText={setCookingDescription}
         multiline={true}
         numberOfLines={4}
         style={[styles.input, { height: hp(20), textAlignVertical: "top" }]}
