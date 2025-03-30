@@ -10,9 +10,12 @@ export default function RecipesFormScreen({ route, navigation }) {
   const [cookingDescription, setCookingDescription] = useState(
     recipeToEdit ? recipeToEdit.cookingDescription : ""
   );
+  const [foodId, setFoodId] = useState(
+    recipeToEdit ? recipeToEdit.foodId : Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000
+  );
 
   const saverecipe = async () => {
-    const newRecipe = { recipeName, recipeImage, cookingDescription };
+    const newRecipe = { foodId, recipeName, recipeImage, cookingDescription };
     console.log(newRecipe)
     try {
       const existingRecipes = await AsyncStorage.getItem("customrecipes");

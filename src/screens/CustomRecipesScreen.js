@@ -21,14 +21,13 @@ import {
   
     const route = useRoute();
     const { recipe } = route.params || {}; // Pass the  object as a parameter
-    console.log('recipe',recipe);
     
     const favoriteRecipe = useSelector(
       (state) => state.favorites.favoriterecipes
     );
     console.log('favoriteRecipe from custom',favoriteRecipe);
     
-    const isFavourite = favoriteRecipe.includes(recipe.idCategory); // Adjust this according to your recipe structure
+    const isFavourite = favoriteRecipe.includes(recipe); // Adjust this according to your recipe structure
   
     if (!recipe) {
       return (
@@ -41,7 +40,7 @@ import {
     const handleToggleFavorite = () => {
       dispatch(toggleFavorite(recipe)); // Adjust the action to handle recipe
     };
-  
+
     return (
       <ScrollView
         style={styles.container}

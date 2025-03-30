@@ -156,12 +156,12 @@ import {
       marginTop: hp(5),
     },
     recipeCard: {
-      width: 400, // Make recipe card width more compact
-      height: 300, // Adjust the height of the card to fit content
+      //width: 400, // Make recipe card width more compact
+      //height: 320, // Adjust the height of the card to fit content
       backgroundColor: "#fff",
-      padding: wp(3),
+      padding: wp(1),
       borderRadius: 8,
-      marginBottom: hp(2),
+      marginBottom: hp(1),
       shadowColor: "#000",
       shadowOpacity: 0.1,
       shadowRadius: 4,
